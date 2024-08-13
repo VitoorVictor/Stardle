@@ -12,13 +12,13 @@ body{
       opacity: 1;
   } 
   100% {
-      transform: translateX(-100vw); 
+      transform: translateX(-30vw); 
       opacity: 1;
   }
 }
 
 .animate-move-left {
-  animation: moveLeft 20s linear  infinite;
-  animation-delay: 15s;
+  animation: moveLeft 24s linear  infinite;
+  animation-delay: 48s;
   opacity: 0;
 }
