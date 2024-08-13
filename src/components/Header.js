@@ -1,7 +1,7 @@
 function Header() {
     
     return(
-        <div className="flex justify-center items-center mt-10 mb-10">
+        <div className="flex justify-center items-center mt-10 mb-5">
             <div className="configs mt-6">
             <button>
                 <span className="material-symbols-outlined text-[50px] text-white font-thin transform transition-transform duration-300 hover:rotate-45 hover:scale-110 hover:cursor-pointer">

@@ -1,5 +1,5 @@
 import Question from './components/Question.js';
-import Answer from './components/Answer.js';
+import CardNPC from './components/CardNPC.js';
 import Header from './components/Header.js'
 import './App.css';
 import React, { useState } from 'react';
@@ -53,7 +53,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 5,
@@ -437,7 +437,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 37,
@@ -449,7 +449,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 38,
@@ -461,7 +461,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 39,
@@ -473,7 +473,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 40,
@@ -485,7 +485,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 41,
@@ -497,7 +497,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 42,
@@ -509,7 +509,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 43,
@@ -521,7 +521,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 44,
@@ -533,7 +533,7 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
     {
       id: 45,
@@ -545,62 +545,73 @@ function App() {
       presenteavel: false,
       casavel: false,
       estacao: 'Desconhecido',
-      dia: 'Desconhecido',
+      dia: '?',
     },
 
   ];
 
   
-  const [selectNPC, setSelectNPC] = useState(null);
+  const [selectNPC, setSelectNPC] = useState([]);
+  const [showTable, setShowTable] = useState(false);
     
   function ChosenNPC(id){
     const npc = NPCs.find(npc => npc.id === id);
-    setSelectNPC(npc);
-    console.log(npc); 
+    if (npc) {
+      // Adicione o NPC ao array de seleções
+      setSelectNPC(prevSelectedNPCs => [...prevSelectedNPCs, npc]);
+      setShowTable(true);
+    }
   }
 
-
-  let lastNPC = null;
-
-  function randomNPCs() {
-    let randomIndex;
-    do {
-      randomIndex = Math.floor(Math.random() * NPCs.length);
-    } while (randomIndex === lastNPC);
-
-    lastNPC = randomIndex; 
-    return NPCs[randomIndex];
-  }
-
-  let NPC = randomNPCs();
+  let NPC = NPCs[29];
 
 
   return (
-    <div className="App">
+    <div className="App flex flex-col justify-between  min-h-screen">
       <Header />
       <img 
         src="/gif/picmix.com_2189259.gif" 
         alt="pelicano" 
         width="100px" 
-        className='animate-move-left mb-10'/>
+        className='animate-move-left'/>
       <Question DadosNPCs={NPCs} onSendData={ChosenNPC}/>
-      {selectNPC && (
-        <Answer DadoNPC={selectNPC}/> 
+      {showTable && (
+        <div className="overflow-x-auto">
+          <table className="mx-auto max-w-md border-collapse">
+            <thead>
+              <tr className="flex justify-between items-end gap-2 mb-10"> 
+                <th className="p-2 border-b-4 border-white w-32">NPC</th> 
+                <th className="p-2 border-b-4 border-white w-32">Gênero</th>
+                <th className="p-2 border-b-4 border-white w-32">Onde mora</th>
+                <th className="p-2 border-b-4 border-white w-32">Cor do cabelo</th>
+                <th className="p-2 border-b-4 border-white w-32">Casável</th>
+                <th className="p-2 border-b-4 border-white w-32">Presenteável</th>
+                <th className="p-2 border-b-4 border-white w-32">Estação do aniversário</th>
+                <th className="p-2 border-b-4 border-white w-32">Dia do aniversário</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectNPC.slice().reverse().map((npc, index) => (
+                <CardNPC key={index} DadoNPC={npc} ResponseNPC={NPC}/>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
+      <div className='h-80'>
+
+      </div>
       <h2 hidden>O último personagem foi ...</h2>
-      <div className="absolute bottom-5 left-0 right-0 flex justify-center">
-        <a href="@"><img src="/img/github.png" alt="github" width="40px" className='m-2  rounded-full bg-white'/></a>
-        <a href="@"><img src="/img/instagram.png" alt="instagram" width="40px" className='m-2   rounded-full bg-white'/></a>
-        <a href="@"><img src="/img/steam.png" alt="steam" width="40px" className='m-2 rounded-full   rounded-full bg-white'/></a>
+      <div>
+        <div className="flex justify-center mt-4">
+          <a href="@"><img src="/img/github.png" alt="github" width="40px" className='m-2 rounded-full bg-white' /></a>
+          <a href="@"><img src="/img/instagram.png" alt="instagram" width="40px" className='m-2 rounded-full bg-white' /></a>
+          <a href="@"><img src="/img/steam.png" alt="steam" width="40px" className='m-2 rounded-full bg-white' /></a>
+        </div>
+        <div className="flex justify-center mb-4">
+          <p className="text-sm text-white">Este projeto não é patrocinado por ninguém!</p>
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-        <p className="text-sm text-white">Este projeto não é patrocinado por ninguém!</p>
-      </div>
-      {/* <h1>Nome: {NPC.nome}</h1>
-      <h1>Loca onde mora: {NPC.morada}</h1>
-      <h1>É casável: {NPC.casavel === true ? 'sim' : 'não'}</h1>
-      <h1>É presenteável {NPC.presenteavel === true ? 'sim' : 'não'}</h1>
-      <CardNPCs/> */}
     </div> 
   );
 }

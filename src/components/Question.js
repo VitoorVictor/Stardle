@@ -1,47 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo  } from 'react';
 
 function Question({ DadosNPCs = [], onSendData }) {
     
-    const characters = Array.isArray(DadosNPCs) ? DadosNPCs.map(NPC => ({
-        nome: NPC.nome,
-        img: NPC.img,
-        id: NPC.id
-    })) : [];
+    const characters = useMemo(() => (
+        Array.isArray(DadosNPCs) ? DadosNPCs.map(NPC => ({
+            nome: NPC.nome,
+            img: NPC.img,
+            id: NPC.id
+        })) : []
+    ), [DadosNPCs]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredCharacters, setFilteredCharacters] = useState(characters);
+    // Estado para rastrear os personagens selecionados
+    const [selectedNPCs, setSelectedNPCs] = useState([]);
 
-    const handleSearchChange = (event) => {
-        const term = event.target.value.toLowerCase();
-        setSearchTerm(term);
+    
+    // Atualiza a lista de personagens filtrados com base no termo de busca e nos NPCs selecionados
+    useEffect(() => {
         setFilteredCharacters(
-            characters.filter((character) =>
-                character.nome.toLowerCase().startsWith(term)
+            characters.filter(character =>
+                !selectedNPCs.includes(character.id) &&
+                character.nome.toLowerCase().startsWith(searchTerm.toLowerCase())
             )
         );
+    }, [searchTerm, selectedNPCs, characters]);
+
+    // Manipulador para mudanças no campo de busca
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
     };
 
+    // Envia os dados do personagem selecionado e atualiza os estados
     const sendDataToApp = (id) => {
-        onSendData(id); 
+        onSendData(id);
+        setSelectedNPCs(prevSelectedNPCs => [...prevSelectedNPCs, id]);
         setSearchTerm('');
-        setFilteredCharacters(characters);
     };
 
+    // Manipulador para o botão de envio
     const handleSubmit = () => {
         if (searchTerm) {
             const matchingCharacter = characters.find(character =>
                 character.nome.toLowerCase().startsWith(searchTerm.toLowerCase())
             );
-            if (matchingCharacter) {
-                onSendData(matchingCharacter.id);
-                setSearchTerm('');
-                setFilteredCharacters(characters);
+            if (matchingCharacter && !selectedNPCs.includes(matchingCharacter.id)) {
+                sendDataToApp(matchingCharacter.id);
             }
         }
     };
 
     return (
-        <div>
+        <div className='mt-5'>
             <div className="bg-white/60 border-2 rounded-lg mx-auto max-w-md">
                 <div className="question mt-5 mb-3">
                     <h1 className="text-gray-800 text-2xl font-bold">
