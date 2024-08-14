@@ -21,7 +21,7 @@ const CardNPC = ({ DadoNPC, ResponseNPC, onMatch  }) => {
         if (allPropertiesMatch()) {
             onMatch ();
         }
-    }, [DadoNPC, ResponseNPC]);
+    },);
 
     return (
         <motion.tr
