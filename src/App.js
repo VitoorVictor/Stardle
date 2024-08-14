@@ -570,6 +570,9 @@ function App() {
     const npc = NPCs[randomIndex];
     setSelectedNPC(npc);
     setQuestionHidden(true);
+    if(buttonPhrase === 'Reiniciar Stardle!'){
+      window.location.reload();
+    }
     setButtonPhrase('Reiniciar Stardle!')
     console.log('NPC selecionado aleatoriamente:', npc); // Adiciona o console.log para imprimir o NPC selecionado
 };
