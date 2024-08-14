@@ -549,10 +549,12 @@ function App() {
     },
 
   ];
-
-  
   const [selectNPC, setSelectNPC] = useState([]);
   const [showTable, setShowTable] = useState(false);
+  const [selectedNPC, setSelectedNPC] = useState(null);
+  const [questionHidden, setQuestionHidden] = useState(false);
+  const [showStarContainer, setShowStarContainer] = useState(false);
+  const [buttonPhrase, setButtonPhrase] = useState('Iniciar Stardle!');
     
   function ChosenNPC(id){
     const npc = NPCs.find(npc => npc.id === id);
@@ -563,57 +565,99 @@ function App() {
     }
   }
 
-  let NPC = NPCs[29];
+  const selectRandomNPC = () => {
+    const randomIndex = Math.floor(Math.random() * NPCs.length);
+    const npc = NPCs[randomIndex];
+    setSelectedNPC(npc);
+    setQuestionHidden(true);
+    setButtonPhrase('Reiniciar Stardle!')
+    console.log('NPC selecionado aleatoriamente:', npc); // Adiciona o console.log para imprimir o NPC selecionado
+};
+
+  const handleMatch = () => {
+    setShowStarContainer(true);
+    setQuestionHidden(false);
+  };
 
 
   return (
-    <div className="App flex flex-col justify-between  min-h-screen">
-      <Header />
-      <img 
-        src="/gif/picmix.com_2189259.gif" 
-        alt="pelicano" 
-        width="100px" 
-        className='animate-move-left'/>
-      <Question DadosNPCs={NPCs} onSendData={ChosenNPC}/>
-      {showTable && (
-        <div className="overflow-x-auto">
-          <table className="mx-auto max-w-md border-collapse">
-            <thead>
-              <tr className="flex justify-between items-end gap-2 mb-10"> 
-                <th className="p-2 border-b-4 border-white w-32">NPC</th> 
-                <th className="p-2 border-b-4 border-white w-32">Gênero</th>
-                <th className="p-2 border-b-4 border-white w-32">Onde mora</th>
-                <th className="p-2 border-b-4 border-white w-32">Cor do cabelo</th>
-                <th className="p-2 border-b-4 border-white w-32">Casável</th>
-                <th className="p-2 border-b-4 border-white w-32">Presenteável</th>
-                <th className="p-2 border-b-4 border-white w-32">Estação do aniversário</th>
-                <th className="p-2 border-b-4 border-white w-32">Dia do aniversário</th>
-              </tr>
-            </thead>
-            <tbody>
-              {selectNPC.slice().reverse().map((npc, index) => (
-                <CardNPC key={index} DadoNPC={npc} ResponseNPC={NPC}/>
-              ))}
-            </tbody>
-          </table>
+    <div className="App flex flex-col justify-between min-h-screen overflow-hidden">
+        <Header />
+        <img 
+            src="/gif/picmix.com_2189259.gif" 
+            alt="pelicano" 
+            width="100px" 
+            className='animate-move-left'
+        />
+        {!questionHidden  
+        ?  ( <div className="flex justify-center ">
+              <button onClick={selectRandomNPC} className="mt-4 p-2 bg-white/60 text-black text-lg rounded w-40 border">
+                      {buttonPhrase}
+              </button>
+            </div>
+        )
+        :  (<Question DadosNPCs={NPCs} onSendData={ChosenNPC}/>
+        )}
+        {showTable && (
+            <div className="overflow-x-auto">
+                <table className="mx-auto max-w-md border-collapse">
+                    <thead>
+                        <tr className="flex justify-between items-end gap-2 mb-10"> 
+                            <th className="p-2 border-b-4 border-white w-32">NPC</th> 
+                            <th className="p-2 border-b-4 border-white w-32">Gênero</th>
+                            <th className="p-2 border-b-4 border-white w-32">Onde mora</th>
+                            <th className="p-2 border-b-4 border-white w-32">Cor do cabelo</th>
+                            <th className="p-2 border-b-4 border-white w-32">Casável</th>
+                            <th className="p-2 border-b-4 border-white w-32">Presenteável</th>
+                            <th className="p-2 border-b-4 border-white w-32">Estação do aniversário</th>
+                            <th className="p-2 border-b-4 border-white w-32">Dia do aniversário</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {selectNPC.slice().reverse().map((npc) => (
+                        <CardNPC key={npc.id} DadoNPC={npc} ResponseNPC={selectedNPC} onMatch={handleMatch}/>
+                      ))}
+                    </tbody>
+                </table>
+            </div>
+        )}
+        <div className='h-80'></div>
+        <h2 hidden>O último personagem foi ...</h2>
+        {showStarContainer && (
+                <div className="fixed inset-0 flex star-container justify-center items-center z-50 pointer-events-none">
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 15 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 27 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 20 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 18 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 19 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 24 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 23 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 28 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 16 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 15 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 19 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 21 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 26 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 12 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 19 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 24 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 16 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 23 }}/>
+                    <img src="/img/fruta-estrela.png" alt="estrela" className='w-24 animate-win' style={{ '--i': 16 }}/>
+                </div>
+            )}
+        <div>
+            <div className="flex justify-center mt-4">
+                <a href="https://github.com/VitoorVictor"><img src="/img/github.png" alt="github" width="40px" className='m-2 rounded-full bg-white' /></a>
+                <a href="https://www.instagram.com/vitor.victor/"><img src="/img/instagram.png" alt="instagram" width="40px" className='m-2 rounded-full bg-white' /></a>
+                <a href="https://store.steampowered.com/app/413150/Stardew_Valley/"><img src="/img/steam.png" alt="steam" width="40px" className='m-2 rounded-full bg-white' /></a>
+            </div>
+            <div className="flex justify-center mb-4">
+                <p className="text-sm text-white">Este projeto não é patrocinado por ninguém!</p>
+            </div>
         </div>
-      )}
-      <div className='h-80'>
-
-      </div>
-      <h2 hidden>O último personagem foi ...</h2>
-      <div>
-        <div className="flex justify-center mt-4">
-          <a href="@"><img src="/img/github.png" alt="github" width="40px" className='m-2 rounded-full bg-white' /></a>
-          <a href="@"><img src="/img/instagram.png" alt="instagram" width="40px" className='m-2 rounded-full bg-white' /></a>
-          <a href="@"><img src="/img/steam.png" alt="steam" width="40px" className='m-2 rounded-full bg-white' /></a>
-        </div>
-        <div className="flex justify-center mb-4">
-          <p className="text-sm text-white">Este projeto não é patrocinado por ninguém!</p>
-        </div>
-      </div>
-    </div> 
-  );
+    </div>
+);
 }
 
 export default App;
