@@ -39,7 +39,7 @@ body{
 .animate-win{
   animation: animateRainReverse 15s linear infinite;
   filter: drop-shadow(10px 10px 15px rgb(105, 14, 179, 0.8));
-  animation-duration: calc(160s / var(--i));
+  animation-duration: calc(140s / var(--i));
 }
 .star-container img:nth-child(even)
 {

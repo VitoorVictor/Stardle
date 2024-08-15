@@ -1,6 +1,6 @@
-import Question from './components/Question.js';
-import CardNPC from './components/CardNPC.js';
-import Header from './components/Header.js'
+import Question from './components/Question.jsx';
+import CardNPC from './components/CardNPC.jsx';
+import Header from './components/Header.jsx'
 import './App.css';
 import React, { useState } from 'react';
 

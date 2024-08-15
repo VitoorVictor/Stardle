@@ -18,12 +18,15 @@ function Question({ DadosNPCs = [], onSendData }) {
     
     // Atualiza a lista de personagens filtrados com base no termo de busca e nos NPCs selecionados
     useEffect(() => {
-        setFilteredCharacters(
-            characters.filter(character =>
+        if(searchTerm.trim()){
+            const filtered = characters.filter(character =>
                 !selectedNPCs.includes(character.id) &&
                 character.nome.toLowerCase().startsWith(searchTerm.toLowerCase())
-            )
-        );
+            );
+            setFilteredCharacters(filtered);      
+        } else {
+            setFilteredCharacters([]); 
+        }
     }, [searchTerm, selectedNPCs, characters]);
 
     // Manipulador para mudanças no campo de busca
@@ -36,6 +39,12 @@ function Question({ DadosNPCs = [], onSendData }) {
         onSendData(id);
         setSelectedNPCs(prevSelectedNPCs => [...prevSelectedNPCs, id]);
         setSearchTerm('');
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit();
+        }
     };
 
     // Manipulador para o botão de envio
@@ -73,6 +82,7 @@ function Question({ DadosNPCs = [], onSendData }) {
                     autoComplete='off'
                     value={searchTerm}
                     onChange={handleSearchChange}
+                    onKeyDown={handleKeyDown}
                 />
                 <button
                     className="w-1/4 p-2 bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors duration-300"
