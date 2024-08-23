@@ -624,7 +624,7 @@ function App() {
                 </table>
             </div>
         )}
-        <div className='h-80'></div>
+        <div className='h-40'></div>
         <h2 hidden>O último personagem foi ...</h2>
         {showStarContainer && (
                 <div className="fixed inset-0 flex star-container justify-center items-center z-50 pointer-events-none">

@@ -60,7 +60,7 @@ function Question({ DadosNPCs = [], onSendData }) {
     };
 
     return (
-        <div className='mt-5'>
+        <div className='mb-5  m-10'>
             <div className="bg-white/60 border-2 rounded-lg mx-auto max-w-md">
                 <div className="question mt-5 mb-3">
                     <h1 className="text-gray-800 text-2xl font-bold">
@@ -89,7 +89,7 @@ function Question({ DadosNPCs = [], onSendData }) {
                     type="button"
                     onClick={handleSubmit}
                 >
-                    <img src="http://www.rw-designer.com/cursor-extern.php?id=152389" alt="" />
+                    <img src="/img/Text Select.cur" alt="" />
                 </button>
             </div>
             {searchTerm && (
